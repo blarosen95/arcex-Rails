@@ -19,5 +19,11 @@ Rails.application.routes.draw do
     end
 
     get "up" => "rails/health#show", as: :rails_health_check
+
+    ## User-level API routes:
+    resources :wallets, only: [] do
+      get :show, on: :collection
+    end
+
   end
 end

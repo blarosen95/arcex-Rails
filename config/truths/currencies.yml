@@ -1,0 +1,7 @@
+currencies:
+  - code: "USD"
+    name: "United States Dollar"
+  - code: "BTC"
+    name: "Bitcoin"
+  - code: "ETH"
+    name: "Ethereum"
