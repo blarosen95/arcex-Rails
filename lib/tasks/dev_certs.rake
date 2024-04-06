@@ -1,9 +1,9 @@
 require 'fileutils'
 require 'rake'
 
-namespace :ssl do
+namespace :setup do
   desc "Create .cert folder and generate SSL certificates if needed"
-  task :setup do
+  task :ssl do
     cert_path = File.join(Dir.pwd, '.cert')
     key_file = File.join(cert_path, 'key.pem')
     cert_file = File.join(cert_path, 'cert.pem')
@@ -27,4 +27,4 @@ namespace :ssl do
 end
 
 # Default task
-task default: 'ssl:setup'
+task default: 'setup:ssl'
