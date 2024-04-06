@@ -7,9 +7,15 @@ class WalletSerializer < BaseSerializer
       currencies
       created_at
       updated_at
-    ]
+    ],
+    :total_balance
   )
 
   # Assocations to include in the serialization:
   has_many :contents
+
+  # Custom attributes to include in the serialization:
+  attribute :total_balance do |object|
+    object.total_balance
+  end
 end

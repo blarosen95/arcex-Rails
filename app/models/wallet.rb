@@ -5,6 +5,10 @@ class Wallet < ApplicationRecord
 
     after_create :create_associations
 
+    def total_balance
+        contents.map(&:usdt_value).sum
+    end
+
     private
 
     def currencies_are_supported
@@ -19,6 +23,8 @@ class Wallet < ApplicationRecord
     def create_contents
         CURRENCIES.each do |currency|
             wallet_content = contents.create(currency: currency[:code], balance: 0.0)
+            # TODO: Replace below with above when not testing Wallet UI/UX:
+            # wallet_content = contents.create(currency: currency[:code], balance: 0.5)
 
             Rails.logger.error "Contents could not be created for wallet #{id}: #{contents.errors.full_messages.join(", ")}" unless wallet_content.save
         end

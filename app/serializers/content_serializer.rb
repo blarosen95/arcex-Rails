@@ -7,6 +7,11 @@ class ContentSerializer < BaseSerializer
             balance
             created_at
             updated_at
-        ]
+        ],
+        :usdt_value
     )
+
+    attribute :usdt_value do |object|
+        object.usdt_value
+    end
 end

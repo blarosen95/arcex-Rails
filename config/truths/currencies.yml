@@ -1,7 +1,10 @@
 currencies:
   - code: "USD"
     name: "United States Dollar"
+    current_value: 1
   - code: "BTC"
     name: "Bitcoin"
+    current_value: 68417.10
   - code: "ETH"
     name: "Ethereum"
+    current_value: 3363.27
