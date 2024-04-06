@@ -36,3 +36,8 @@
 
 # RubyMine:
 /.idea/*
+
+# PKI and Secrets
+/.cert/*
+!/.cert/.keep
+arcex.dev.env
