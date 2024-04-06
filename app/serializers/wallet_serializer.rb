@@ -15,7 +15,5 @@ class WalletSerializer < BaseSerializer
   has_many :contents
 
   # Custom attributes to include in the serialization:
-  attribute :total_balance do |object|
-    object.total_balance
-  end
+  attribute :total_balance, &:total_balance
 end

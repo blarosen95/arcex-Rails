@@ -11,7 +11,6 @@ class ContentSerializer < BaseSerializer
         :usdt_value
     )
 
-    attribute :usdt_value do |object|
-        object.usdt_value
-    end
+    # Custom attributes to include in the serialization
+    attribute :usdt_value, &:usdt_value
 end
