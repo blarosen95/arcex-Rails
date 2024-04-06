@@ -34,7 +34,11 @@ class AddDeviseToUsers < ActiveRecord::Migration[7.1]
 
 
       # Uncomment below if timestamps were not included in your original model.
-      # t.timestamps null: false
+      t.timestamps null: false
+
+      ## Custom Attributes
+      t.string :username, null: false
+      t.boolean :is_admin, default: false
     end
 
     add_index :users, :email,                unique: true
