@@ -3,8 +3,9 @@
 ARCEX Server is the backend for the ARCEX platform. This README documents the steps necessary to get it up and running.
 
 * Assumptions
-    - You have `homebrew` installed.
-    - You have `rvm` installed.
+    - You have `homebrew` installed (https://docs.brew.sh/Installation).
+    - You have `rvm` installed (https://rvm.io/rvm/install).
+        - Follow the guide's `Install GPG Keys` and `Install RVM (development version)` sections (should be just two commands)
 
 * Ruby version
     - 3.1.4 (use `rvm install 3.1.4` to install ruby 3.1.4 inside of a Ruby version manager)
