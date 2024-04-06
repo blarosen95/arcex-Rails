@@ -1,0 +1,10 @@
+<% content_for(:body_title){ "Confirm Email" } %>
+<% content_for :body do %>
+  <p><%= @user.profile.name %>,</p>
+  <p class="mt-2">You added an email to your account: <strong><%= @authentication.email %></strong></p>
+  <p class="mt-2">Please confirm this action by <a href="<%= @authentication.confirmation_token_url %>">visiting this link</a>.</p>
+<% end %>
+<% content_for :sub_body do %>
+  <hr>
+  <p class='my-3'>If you have not authorized this change, please <a href="<%= SUPPORT_URL %>">contact support</a>.</p>
+<% end %>

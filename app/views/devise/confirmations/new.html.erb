@@ -1,0 +1,12 @@
+<h2 class="pt-2">Resend confirmation instructions</h2>
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'pt-4' }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+  <div class="mb-4">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true, class: "form-input max-w-72", value: @login_hint %>
+  </div>
+  <%= invisible_recaptcha_tags text: "Resend confirmation instructions", class: "button text-sm rounded-md px-4 py-2 bg-green-600 border-transparent shadow-sm focus:ring-green-600 text-white hover:bg-green-700 hover:text-white cursor-pointer ring-offset-2"%>
+<% end %>
+<div class="flex gap-4 mt-3 flex-wrap">
+  <%= render "devise/shared/links" %>
+</div>

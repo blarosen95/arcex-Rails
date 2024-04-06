@@ -35,9 +35,30 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# ArcEx Gems:
+gem 'devise'
+gem 'jsonapi-serializer'
+gem 'bootstrap-email'
+gem 'sassc'
+gem 'sassc-rails', group: :assets
+gem 'hashids'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
+
+  # Email previewing in browser:
+  gem 'letter_opener'
+  gem 'letter_opener_web'
+
+  #? TODO: Implement RSpec with these helper gems later:
+  # # RSpec (runtime)
+  # gem 'factory_bot_rails'
+  # gem 'faker'
+  # gem 'ffaker'
+
+  # Environment management (eventually replace with AWS Credentials Manager / similar after MVP):
+  gem 'dotenv'
 end
 
 group :development do
@@ -51,10 +72,33 @@ group :development do
   # gem "spring"
 
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
+
+  # Useful for debugging:
+  gem 'pry'
+  gem 'pry-nav'
+  gem 'pry-remote'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
+
+  # Error reporting for development:
+  gem 'better_errors'
+  gem 'binding_of_caller'
+
+  #? TODO: Implement RSpec later on:
+  # # RSpec
+  # gem 'rspec-rails'
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  #? TODO: Again, implement these two blocks of dependencies with RSpec later on:
+  # # Coverage
+  # gem 'simplecov', require: false
+  # gem 'simplecov-lcov'
+
+  # # Smart testing
+  # gem 'database_cleaner'
 end

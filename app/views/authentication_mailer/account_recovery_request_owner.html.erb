@@ -1,0 +1,17 @@
+<% content_for(:title){ @title } %>
+<% content_for :body do %>
+  <div class="p-5">
+    <div class="mb-4">
+      Dear <%= @owner.email %>,
+    </div>
+    <div>
+      <strong>
+        <%= @alternate_email %>
+      </strong>
+      requested to recover access to this account. If you did not authorize this request please immediately abort this action through the link below.
+    </div>
+    <div class="text-center mt-5">
+      <%= link_to 'Manage Account Recovery', @manage_account_recovery_url, class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

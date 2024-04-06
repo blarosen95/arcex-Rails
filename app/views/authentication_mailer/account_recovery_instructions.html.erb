@@ -1,0 +1,14 @@
+<% content_for(:title){ @title } %>
+<% content_for :body do %>
+  <div class="p-5">
+    <div class="mb-4">
+      Dear <%= @alternate_email %>,
+    </div>
+    <div>
+      Your account recovery request for <%= @owner.email %>'s ArcEx account has been processed. You can reset the account password through the link below.
+    </div>
+    <div class="text-center mt-5">
+      <%= link_to 'Change my password', edit_password_url(:user, reset_password_token: @token), class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

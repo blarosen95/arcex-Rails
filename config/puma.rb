@@ -22,11 +22,19 @@ end
 # terminating a worker in development environments.
 worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
-# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-port ENV.fetch("PORT") { 3000 }
+env_enviornment = ENV.fetch('RAILS_ENV') { 'development' }
+env_port = ENV.fetch("PORT") { 9292 }
+environment env_enviornment
+
+if %w[testing_db production_db development].include? ENV.fetch("RAILS_ENV") { "development" }
+  ssl_bind '0.0.0.0', env_port.to_s, { key: '.cert/key.pem', cert: '.cert/cert.pem' }
+else
+  #! TODO: Revisit why this would cause `production` environment to run off of non-SSL Puma...
+  port env_port
+end
 
 # Specifies the `environment` that Puma will run in.
-environment ENV.fetch("RAILS_ENV") { "development" }
+# environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }

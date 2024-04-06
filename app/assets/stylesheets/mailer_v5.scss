@@ -1,0 +1,55 @@
+// @import 'bootstrap-email';
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Ubuntu, sans-serif;
+}
+
+small,
+.text-small {
+  font-size: 0.8em;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+.body-content {
+  .sub-body-content {
+    font-size: 14px;
+  }
+}
+
+.footer {
+  font-size: 14px;
+}
+
+.d-inline {
+  display: inline;
+}
+
+.mx-5p {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.mw-200p {
+  max-width: 200px;
+}
+.w-100 {
+  width: 100%;
+}
+
+.break-word {
+  word-wrap: break-word;
+}
+
+.ml-10p {
+  margin-left: 10px;
+}
+
+.text-bold {
+  font-weight: bold;
+}

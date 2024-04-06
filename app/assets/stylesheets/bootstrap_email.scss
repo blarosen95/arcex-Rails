@@ -1,0 +1,74 @@
+@media (max-width: 600px) {
+  .container > tbody > tr > td {
+    padding: 0 !important;
+  }
+  .tls-not,
+  .tcs-not,
+  .trs-not,
+  .tjs-not {
+    text-align: inherit;
+  }
+  .tls {
+    text-align: left;
+  }
+  .tcs {
+    text-align: center;
+  }
+  .trs {
+    text-align: right;
+  }
+  .tjs {
+    text-align: justify;
+  }
+  .jcs {
+    justify-content: center;
+  }
+  .jss {
+    justify-content: flex-start;
+  }
+  .jes {
+    justify-content: flex-end;
+  }
+  .card {
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  h2 {
+    font-size: 24px !important;
+  }
+}
+@media (min-width: 601px) {
+  .tll-not,
+  .tcl-not,
+  .trl-not,
+  .tjl-not {
+    text-align: inherit;
+  }
+  .tll {
+    text-align: left;
+  }
+  .tcl {
+    text-align: center;
+  }
+  .trl {
+    text-align: right;
+  }
+  .tjl {
+    text-align: justify;
+  }
+  .jll {
+    justify-content: flex-start;
+  }
+  .jcl {
+    justify-content: center;
+  }
+  .jsl {
+    justify-content: flex-start;
+  }
+  .jel {
+    justify-content: flex-end;
+  }
+  .card-background {
+    background-color: #eff2f7;
+  }
+}

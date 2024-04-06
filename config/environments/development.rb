@@ -8,6 +8,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
 
+  #! TODO: Peatio x Zeitwerk fix below by setting to true???:
   # Do not eager load code on boot.
   config.eager_load = false
 
@@ -33,6 +34,7 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  #! TODO: Replace with :minio for this environment and AWS S3 in production:
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
@@ -73,4 +75,16 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Use the letter_opener_web gem when sending out emails in development environments:
+  # config.action_mailer.delivery_method = :letter_opener_web
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+
+  # URL options for Devise Mailer
+  config.action_mailer.default_url_options = { host: 'localhost', port: 9292 }
+
+  # Assets:
+  config.assets.compile = true
+  # config.assets.digest = false
 end

@@ -1,0 +1,11 @@
+<% content_for(:title){ @title } %>
+<% content_for :body do %>
+  <div class="p-5">
+    <div class="mb-4">
+      Dear <%= @alternate_email %>,
+    </div>
+    <div>
+      You requested to recover access to <%= @owner.email %>'s ArcEx account. The recovery process takes 3 to 5 days. Following this you will receive instructions for resetting your password.
+    </div>
+  </div>
+<% end %>

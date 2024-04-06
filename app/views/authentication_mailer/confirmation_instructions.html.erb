@@ -1,0 +1,31 @@
+<% content_for(:title){"Welcome to ArcEx"}%> <% content_for(:body_title){ "Confirm Email" } %> <% content_for :body do
+%>
+  <div class="text-left">Dear <%= @resource.email %>,</div>
+  <div class="my-3 text-left">
+    Welcome to ArcEx! To finish setting up your account, please confirm your email by clicking the link below.
+  </div>
+  <div class="text-left">
+    <%= link_to 'Confirm my email', confirmation_url(@resource, confirmation_token: @token), class: 'btn btn-primary' %>
+  </div>
+<% end %> <% content_for :sub_body do %>
+  <hr />
+  <div class="text-muted text-small mt-4">Didn't create an account with us? Please ignore this email.</div>
+<% end %> <% content_for :scripts do %>
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "EmailMessage",
+      "description": "Confirm my ArcEx account",
+      "action": {
+        "@type": "ViewAction",
+        "url": "<%= confirmation_url(@resource, confirmation_token: @token) %>",
+        "name": "Confirm Account"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "ArcEx",
+        "url": "https://arcex.com"
+      }
+    }
+  </script>
+<% end %>
