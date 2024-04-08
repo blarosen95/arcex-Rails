@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_06_185039) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_07_181107) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_185039) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["wallet_id"], name: "index_contents_on_wallet_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.bigint "sender_id", null: false
+    t.bigint "recipient_id", null: false
+    t.string "currency"
+    t.decimal "amount", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_transactions_on_recipient_id"
+    t.index ["sender_id", "recipient_id"], name: "index_transactions_on_sender_id_and_recipient_id"
+    t.index ["sender_id"], name: "index_transactions_on_sender_id"
+    t.check_constraint "sender_id <> recipient_id", name: "sender_recipient_different"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,5 +69,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_185039) do
   end
 
   add_foreign_key "contents", "wallets"
+  add_foreign_key "transactions", "wallets", column: "recipient_id"
+  add_foreign_key "transactions", "wallets", column: "sender_id"
   add_foreign_key "wallets", "users"
 end

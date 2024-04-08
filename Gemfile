@@ -52,10 +52,10 @@ group :development, :test do
   gem 'letter_opener_web'
 
   #? TODO: Implement RSpec with these helper gems later:
-  # # RSpec (runtime)
+  # RSpec (runtime)
   # gem 'factory_bot_rails'
-  # gem 'faker'
-  # gem 'ffaker'
+  gem 'faker'
+  gem 'ffaker'
 
   # Environment management (eventually replace with AWS Credentials Manager / similar after MVP):
   gem 'dotenv'
