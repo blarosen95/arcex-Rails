@@ -5,14 +5,14 @@ class CreateTransactions < ActiveRecord::Migration[7.1]
       t.references :recipient, null: false, foreign_key: { to_table: :wallets }
       t.string :currency
       t.decimal :amount, precision: 10, scale: 2
+      t.integer :status, default: 0, null: false
 
       t.timestamps
 
       ## Indexes
-      t.index [:sender_id, :recipient_id]
+      t.index %i[sender_id recipient_id]
     end
 
-    #! TODO: Add this same logic as a model-level validation:
     # Ensure sender_id and recipient_id are not the same
     reversible do |dir|
       dir.up do

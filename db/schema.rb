@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_07_181107) do
     t.bigint "recipient_id", null: false
     t.string "currency"
     t.decimal "amount", precision: 10, scale: 2
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recipient_id"], name: "index_transactions_on_recipient_id"

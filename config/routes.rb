@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   scope '/api' do
-    if Rails.env.development?
-      mount LetterOpenerWeb::Engine, at: "/letter_opener"
-    end
+    mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
     devise_for :users, path: '', path_names: {
       sign_in: 'login',
@@ -18,12 +16,18 @@ Rails.application.routes.draw do
       get '/me', to: 'users/sessions#me', as: :me
     end
 
-    get "up" => "rails/health#show", as: :rails_health_check
+    get 'up' => 'rails/health#show', as: :rails_health_check
 
     ## User-level API routes:
     resources :wallets, only: [] do
       get :show, on: :collection
     end
 
+    resources :transactions, only: %i[create index], defaults: { format: 'json' } do
+      collection do
+        get 'sent'
+        get 'received'
+      end
+    end
   end
 end
