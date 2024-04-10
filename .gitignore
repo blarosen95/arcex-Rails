@@ -41,3 +41,6 @@
 /.cert/*
 !/.cert/.keep
 arcex.dev.env
+
+# Dev Env NPM Deps (stuff like Prettier)
+/node_modules/*
