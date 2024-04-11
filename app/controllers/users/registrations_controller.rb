@@ -9,6 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def set_username
     # TODO: Refactor this to be more Ruby-esque (i.e. use safe navigation operators):
     return unless params[:user] && params[:user][:email].present?
+
     params[:user][:username] = generate_username(params[:user][:email])
   end
 
@@ -23,7 +24,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       render json: {
         status: { message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}" }
-    }, status: :unprocessable_entity
+      }, status: :unprocessable_entity
     end
   end
 
@@ -36,6 +37,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # Prevent infinite loops. Make 4 additional attempts (5th is a throwaway. Could be optimized to avoid entering 5th iteration):
     5.times do
       return unique_username unless User.exists?(username: unique_username)
+
       unique_username = "#{username_base}_#{SecureRandom.hex(9)}"
     end
 

@@ -1,34 +1,33 @@
 module MailerHelper
-    def formatted_datetime(s)
-      begin
-        DateTime.parse(s.to_s).strftime('%B %d, %Y')
-      rescue StandardError
-        nil
-      end
-    end
-  
-    def add_params_to_url(url, query: {}, utm_source: nil, login_hint: nil)
-      return if url.blank?
-      u = URI.parse(url)
-      u.query =
-        Rack::Utils
-          .parse_nested_query(u.query.to_s)
-          .merge(query.stringify_keys)
-          .merge(
-            {
-              login_hint: login_hint,
-              utm_source: utm_source,
-              utm_medium: 'email',
-              utm_campaign: 'ArcEx Emails'
-            }.stringify_keys.compact_blank,
-          )
-          .to_query
-      u.to_s
-    end
-  
-    def colors
-      JSON.parse(
-        '{
+  def formatted_datetime(s)
+    DateTime.parse(s.to_s).strftime('%B %d, %Y')
+  rescue StandardError
+    nil
+  end
+
+  def add_params_to_url(url, query: {}, utm_source: nil, login_hint: nil)
+    return if url.blank?
+
+    u = URI.parse(url)
+    u.query =
+      Rack::Utils
+      .parse_nested_query(u.query.to_s)
+      .merge(query.stringify_keys)
+      .merge(
+        {
+          login_hint:,
+          utm_source:,
+          utm_medium: 'email',
+          utm_campaign: 'ArcEx Emails'
+        }.stringify_keys.compact_blank
+      )
+      .to_query
+    u.to_s
+  end
+
+  def colors
+    JSON.parse(
+      '{
           "black": "#000",
           "white": "#fff",
           "rose": {
@@ -295,13 +294,13 @@ module MailerHelper
             "800": "#1e293b",
             "900": "#0f172a"
           }
-        }',
-      )
-    end
-  
-    def font_sizes
-      JSON.parse(
-        '{
+        }'
+    )
+  end
+
+  def font_sizes
+    JSON.parse(
+      '{
             "0":"0",
             "xs":"12px",
             "sm":"14px",
@@ -316,12 +315,12 @@ module MailerHelper
             "7xl":"72px",
             "8xl":"96px",
             "9xl":"128px"
-          }',
-      )
-    end
-  
-    def opacity
-      '
+          }'
+    )
+  end
+
+  def opacity
+    '
         .opacity-0 { opacity: 0; }
         .opacity-5 { opacity: 0.05; }
         .opacity-10 { opacity: 0.1; }
@@ -338,10 +337,10 @@ module MailerHelper
         .opacity-95 { opacity: 0.95; }
         .opacity-100 { opacity: 1; }
       '
-    end
-  
-    def shadows
-      '
+  end
+
+  def shadows
+    '
         .shadow-xs { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05); }
         .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
         .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
@@ -352,7 +351,7 @@ module MailerHelper
         .shadow-inner { box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
         .shadow-outline { box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); }
         .shadow-none { box-shadow: none; }
-  
+
         .btn-shadow-xs a { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05); }
         .btn-shadow-sm a { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
         .btn-shadow a { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
@@ -364,5 +363,5 @@ module MailerHelper
         .btn-shadow-outline a { box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); }
         .btn-shadow-none a { box-shadow: none; }
       '
-    end
   end
+end

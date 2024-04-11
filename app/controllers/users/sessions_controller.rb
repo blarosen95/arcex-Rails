@@ -5,10 +5,10 @@ class Users::SessionsController < Devise::SessionsController
 
   respond_to :json
 
-  #! TODO: Refactor this later:
-  #? TODO: Add caching to this method because it gets called frequently during a session
-  #? TODO: Also, ensure that logging out will clear the cache
-  #? TODO: Also, ensure that cache's TTL is equal to auto-logout time
+  # ! TODO: Refactor this later:
+  # ? TODO: Add caching to this method because it gets called frequently during a session
+  # ? TODO: Also, ensure that logging out will clear the cache
+  # ? TODO: Also, ensure that cache's TTL is equal to auto-logout time
   def me
     if current_user
       render json: {

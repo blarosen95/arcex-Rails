@@ -2,33 +2,41 @@
 
 ARCEX Server is the backend for the ARCEX platform. This README documents the steps necessary to get it up and running.
 
-* Assumptions
-    - You have `homebrew` installed (https://docs.brew.sh/Installation).
-    - You have `rvm` installed (https://rvm.io/rvm/install).
-        - Follow the guide's `Install GPG Keys` and `Install RVM (development version)` sections (should be just two commands)
+- Assumptions
 
-* Ruby version
-    - 3.1.4 (use `rvm install 3.1.4` to install ruby 3.1.4 inside of a Ruby version manager)
+  - You have `homebrew` installed (https://docs.brew.sh/Installation).
+  - You have `rvm` installed (https://rvm.io/rvm/install).
+    - Follow the guide's `Install GPG Keys` and `Install RVM (development version)` sections (should be just two commands)
 
-* System dependencies
-    - `brew install postgresql` to install postgresql
+- Ruby version
 
-* Configuration
-    - `bundle install` to install all the gems
-    - `rake setup:ssl` to create a self-signed SSL certificate and key for local development environments
-    - `rake setup:env` to create the `arcex.dev.env` file for managing secrets/env-variables in local development environments
+  - 3.1.4 (use `rvm install 3.1.4` to install ruby 3.1.4 inside of a Ruby version manager)
 
-* Database creation
-    - `rake db:create` to create the database
+- System dependencies
 
-* Database initialization
-    - `rake db:migrate` to run the migrations
+  - `brew install postgresql` to install postgresql
 
-* How to run the test suite
-    - TBD (but likely via `rspec [foo]`)
+- Configuration
 
-* Services (job queues, cache servers, search engines, etc.)
-    - TBD (will likely want Redis and/or RabbitMQ and/or SideKiq)
+  - `bundle install` to install all the gems
+  - `rake setup:ssl` to create a self-signed SSL certificate and key for local development environments
+  - `rake setup:env` to create the `arcex.dev.env` file for managing secrets/env-variables in local development environments
 
-* Deployment instructions
-    - TBD
+- Database creation
+
+  - `rake db:create` to create the database
+
+- Database initialization
+
+  - `rake db:migrate` to run the migrations
+
+- How to run the test suite
+
+  - TBD (but likely via `rspec [foo]`)
+
+- Services (job queues, cache servers, search engines, etc.)
+
+  - TBD (will likely want Redis and/or RabbitMQ and/or SideKiq)
+
+- Deployment instructions
+  - TBD

@@ -12,10 +12,10 @@ class User < ApplicationRecord
   private
 
   def create_wallet
-    wallet = build_wallet(user: self, currencies: CURRENCIES.map { |c| c[:code] }, name: "Default Wallet")
-    unless wallet.save
-      Rails.logger.error "Wallet could not be created for user #{id}: #{wallet.errors.full_messages.join(", ")}"
-    end
+    wallet = build_wallet(user: self, currencies: CURRENCIES.map { |c| c[:code] }, name: 'Default Wallet')
+    return if wallet.save
+
+    Rails.logger.error "Wallet could not be created for user #{id}: #{wallet.errors.full_messages.join(', ')}"
   end
 
   def create_associations
