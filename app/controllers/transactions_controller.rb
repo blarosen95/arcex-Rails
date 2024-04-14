@@ -34,9 +34,8 @@ class TransactionsController < ApplicationController
                                         permitted_params[:currency]).call
 
     if transaction.errors.any?
-      transaction.pry
       render json: {
-        status: { message: transaction.errors.join(', ') }
+        status: { message: transaction.errors.full_messages.join(', ') }
       }, status: :unprocessable_entity
     else
       render json: {
