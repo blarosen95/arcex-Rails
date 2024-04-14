@@ -13,35 +13,3 @@ class TransactionSerializer < BaseSerializer
     ]
   )
 end
-
-class RecipientSerializer < BaseSerializer
-  set_type 'recipients'
-
-  attributes(
-    *%i[
-      recipient_id
-      created_at
-      updated_at
-    ],
-    :recipient_name
-  )
-
-  # Custom attributes to include in the serialization:
-  attribute :recipient_name, &:recipient_name
-end
-
-class SenderSerializer < BaseSerializer
-  set_type 'senders'
-
-  attributes(
-    *%i[
-      currency
-      amount
-      created_at
-      updated_at
-    ]
-  )
-
-  # Custom attributes to include in the serialization:
-  attribute :recipient_name, &:recipient_name
-end
