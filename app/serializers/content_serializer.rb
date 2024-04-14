@@ -13,4 +13,5 @@ class ContentSerializer < BaseSerializer
 
   # Custom attributes to include in the serialization
   attribute :usdt_value, &:usdt_value
+  attribute :full_currency_name, &:full_currency_name
 end

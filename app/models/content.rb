@@ -9,4 +9,9 @@ class Content < ApplicationRecord
     currency = CURRENCIES.find { |c| c[:code] == self.currency }
     currency[:current_value] * balance
   end
+
+  def full_currency_name
+    currency = CURRENCIES.find { |c| c[:code] == self.currency }
+    currency[:name]
+  end
 end
