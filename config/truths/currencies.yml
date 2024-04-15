@@ -2,9 +2,12 @@ currencies:
   - code: "USD"
     name: "United States Dollar"
     current_value: 1
+    is_fiat: true
   - code: "BTC"
     name: "Bitcoin"
     current_value: 68417.10
+    is_fiat: false
   - code: "ETH"
     name: "Ethereum"
     current_value: 3363.27
+    is_fiat: false

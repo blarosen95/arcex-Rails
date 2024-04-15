@@ -14,4 +14,9 @@ class Content < ApplicationRecord
     currency = CURRENCIES.find { |c| c[:code] == self.currency }
     currency[:name]
   end
+
+  def fiat?
+    currency = CURRENCIES.find { |c| c[:code] == self.currency }
+    currency[:is_fiat]
+  end
 end
