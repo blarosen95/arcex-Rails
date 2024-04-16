@@ -4,7 +4,7 @@ class CreateTransactions < ActiveRecord::Migration[7.1]
       t.references :sender, null: false, foreign_key: { to_table: :wallets }
       t.references :recipient, null: false, foreign_key: { to_table: :wallets }
       t.string :currency
-      t.decimal :amount, precision: 10, scale: 2
+      t.decimal :amount, precision: 30, scale: 18
       t.integer :status, default: 0, null: false
 
       t.timestamps

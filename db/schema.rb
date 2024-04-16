@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_407_181_107) do
     t.bigint 'sender_id', null: false
     t.bigint 'recipient_id', null: false
     t.string 'currency'
-    t.decimal 'amount', precision: 10, scale: 2
+    t.decimal 'amount', precision: 30, scale: 18
     t.integer 'status', default: 0, null: false
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
