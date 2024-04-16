@@ -1,8 +1,8 @@
 class WalletsController < ApplicationController
+  before_action :set_wallet, only: %i[show total_equity]
   def show
+    # TODO: For rn, users will only have one wallet, so find the wallet based on current user ownership
     # @wallet = Wallet.find(params[:id])
-    # ! TODO: For rn, users will only have one wallet, so find the wallet based on current user ownership:
-    @wallet = current_user.wallet
 
     serialied_wallet = WalletSerializer.new(@wallet, include: [:contents]).serializable_hash
     wallet_data = serialied_wallet[:data]
@@ -14,23 +14,17 @@ class WalletsController < ApplicationController
     }
   end
 
-  #   def new
-  #     @wallet = Wallet.new
-  #   end
+  def total_equity
+    render json: {
+      data: {
+        total_equity: @wallet.total_balance
+      }
+    }
+  end
 
-  #   def create
-  #     @wallet = Wallet.new(wallet_params)
+  private
 
-  #     if @wallet.save
-  #       redirect_to @wallet
-  #     else
-  #       render :new
-  #     end
-  #   end
-
-  #   private
-
-  #   def wallet_params
-  #     params.require(:wallet).permit(:name, :balance)
-  #   end
+  def set_wallet
+    @wallet = current_user&.wallet
+  end
 end

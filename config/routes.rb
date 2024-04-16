@@ -20,7 +20,10 @@ Rails.application.routes.draw do
 
     ## User-level API routes:
     resources :wallets, only: [] do
-      get :show, on: :collection
+      collection do
+        get 'show'
+        get 'total-equity', to: 'wallets#total_equity', as: :total_equity
+      end
     end
 
     resources :transactions, only: %i[create index], defaults: { format: 'json' } do
