@@ -16,7 +16,6 @@ class Transaction < ApplicationRecord
 
   def process_transaction!
     ActiveRecord::Base.transaction do
-      puts 'Filter here: hi'
       if perform_aml_checks && deduct_sender_balance! && add_recipient_balance!
         update!(status: :complete)
       else
