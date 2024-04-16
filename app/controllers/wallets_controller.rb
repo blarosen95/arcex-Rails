@@ -15,9 +15,10 @@ class WalletsController < ApplicationController
   end
 
   def total_equity
+    # TODO: Decide between manually serializing like below or creating a serializer just for this:
     render json: {
       data: {
-        total_equity: @wallet.total_balance
+        totalEquity: @wallet.total_balance
       }
     }
   end
