@@ -49,4 +49,19 @@ ARCEX Server is the backend for the ARCEX platform. This README documents the st
 - Download and install PostgreSQL 14 from https://sbp.enterprisedb.com/getfile.jsp?fileid=1258897
   - Remember the super admin password you choose during the installation process.
   - You should NOT need to proceed with the Stack Builder installer
-- Remainder of unique steps TBD (need to use a real, non-ARM64 windows device today to finish this off)
+  - Open `C:\Program Files\PostgreSQL\14\data\pg_hba.conf` in notepad (or really any editor you'd like) and make these changes:
+    - Find `METHOD` in the file's contents towards the very end.
+    - Below that heading section that ends in "METHOD", you will see the phrase `scram-sha-256` maybe 6 times.
+    - Replace the first three occurrences of `scram-sha-256` with `trust`
+    - Save the file, you may also exit the editor if desired as no further changes to the file are needed.
+- Open a command prompt **AS ADMIN** and run:
+  - `cd C:\Program Files\PostgreSQL\14\bin`
+  - `psql -U postgres`
+  - Enter the password supplied during PostgreSQL installation
+  - Run `CREATE ROLE root WITH LOGIN SUPERUSER CREATEDB CREATEROLE;`
+  - Run `\q` to exit out of the CLI for psql
+  - Change directory in CMD to this backend app repo's folder using `cd` command and a full path to the root of this project on your local system.
+  - Run `bundle install`
+  - run `rake setup:env`
+  - run `rake db:create db:migrate db:seed`
+  - You should (assuming you've already copied over the cert files from the frontend project) now be able to run `rails s` to start the server.
