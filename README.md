@@ -29,6 +29,7 @@ ARCEX Server is the backend for the ARCEX platform. This README documents the st
 - Database initialization
 
   - `rake db:migrate` to run the migrations
+  - `rake db:seed` will add two fake users to the DB (can be helpful for stuff like transferring between wallets currently)
 
 - How to run the test suite
 
@@ -40,3 +41,12 @@ ARCEX Server is the backend for the ARCEX platform. This README documents the st
 
 - Deployment instructions
   - TBD
+
+## Windows Dev Environment Setup
+- Download and install Ruby 3.1.4 from https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.4-1/rubyinstaller-devkit-3.1.4-1-x64.exe
+  - Install for all users
+- Instead of running the `rake setup:ssl` task, you can copy and paste both `cert.pem` and `key.pem` (from the frontend project) into this project's `.cert/` folder.
+- Download and install PostgreSQL 14 from https://sbp.enterprisedb.com/getfile.jsp?fileid=1258897
+  - Remember the super admin password you choose during the installation process.
+  - You should NOT need to proceed with the Stack Builder installer
+- Remainder of unique steps TBD (need to use a real, non-ARM64 windows device today to finish this off)
