@@ -9,8 +9,8 @@ class Transaction < ApplicationRecord
   validates :amount, numericality: true
   validates :sender, :recipient, presence: true
 
-  validate :sender_and_recipient_different?
-  validate :sufficient_balance?
+  validate :sender_and_recipient_different?, on: :create
+  validate :sufficient_balance?, on: :create
 
   after_create :process_transaction!
 
