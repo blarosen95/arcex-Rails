@@ -32,5 +32,11 @@ Rails.application.routes.draw do
         get 'received'
       end
     end
+
+    resources :assets, only: %i[index show], defaults: { format: 'json' } do
+      member do
+        get 'value'
+      end
+    end
   end
 end
