@@ -1,6 +1,11 @@
 class User < ApplicationRecord
   has_one :wallet, dependent: :destroy
 
+  # has_many :sent_transactions, through: :wallet # TODO Implement the polymorphic Transaction assocations...
+
+  has_many :orders
+  has_many :trades, through: :orders
+
   after_create :create_associations
 
   # Include default devise modules. Others available are:
