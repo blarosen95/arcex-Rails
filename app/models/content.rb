@@ -2,7 +2,7 @@ class Content < ApplicationRecord
   belongs_to :wallet
 
   validates :currency, presence: true
-  validates :balance, numericality: true
+  validates :balance, numericality: { greater_than_or_equal_to: 0 }
 
   def usdt_value
     # ! TODO: For right now, values are hardcoded in CURRENCIES. So let's look up value from there for now:
