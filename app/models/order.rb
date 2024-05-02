@@ -22,12 +22,11 @@ class Order < ApplicationRecord
   # - `reserved` will be replaced with features such as margin trading
   enum direction: %i[buy sell reserved]
 
+  before_validation :set_default_amount_remaining, on: :create
+
   validates :currency, presence: true
   validates :amount, numericality: true
   validates :order_type, :status, :direction, presence: true
-
-  # And we should also run some custom validators, such as ensuring the user has enough balance to place the order:
-  validate :sufficient_balance?, on: :create
 
   # This hook's method will queue in order book and create a Trade object as well:
   after_create :process_order!
@@ -47,20 +46,26 @@ class Order < ApplicationRecord
 
   private
 
-  def sufficient_balance?
-    return if sufficient_balance_for_direction?
-
-    errors.add(:amount, "exceeds user's balance")
+  def set_default_amount_remaining
+    self.amount_remaining ||= amount
   end
 
-  def sufficient_balance_for_direction?
-    currency = direction == 'buy' ? 'USD' : self.currency
-    balance = current_user.wallet.contents.find_by(currency:)&.balance.to_f
-
-    balance >= amount_to_spend
+  def opposite_direction
+    direction == 'buy' ? 'sell' : 'buy'
   end
 
-  def amount_to_spend
-    direction == 'buy' ? amount.to_f * price.to_f : amount.to_f
+  def with_lock!
+    update!(locked: true)
+
+    transaction do
+      lock!
+      yield self if block_given?
+    ensure
+      update!(locked: false)
+    end
+  end
+
+  def fully_filled?
+    amount_remaining.zero? && status == 'processed'
   end
 end
