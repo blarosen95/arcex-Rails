@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  skip_before_action :authenticate_user!
   skip_before_action :verify_signed_out_user
 
   respond_to :json
