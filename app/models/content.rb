@@ -1,7 +1,7 @@
 class Content < ApplicationRecord
   belongs_to :wallet
+  belongs_to :asset
 
-  validates :currency, presence: true
   validates :balance, numericality: { greater_than_or_equal_to: 0 }
 
   def usdt_value

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_421_134_515) do
+ActiveRecord::Schema[7.1].define(version: 20_240_507_193_611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -24,10 +24,11 @@ ActiveRecord::Schema[7.1].define(version: 20_240_421_134_515) do
 
   create_table 'contents', force: :cascade do |t|
     t.bigint 'wallet_id', null: false
-    t.string 'currency'
     t.decimal 'balance', precision: 10, scale: 2, default: '0.0'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.bigint 'asset_id', null: false
+    t.index ['asset_id'], name: 'index_contents_on_asset_id'
     t.index ['wallet_id'], name: 'index_contents_on_wallet_id'
   end
 
@@ -99,12 +100,12 @@ ActiveRecord::Schema[7.1].define(version: 20_240_421_134_515) do
   create_table 'wallets', force: :cascade do |t|
     t.bigint 'user_id', null: false
     t.string 'name'
-    t.text 'currencies', default: [], array: true
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['user_id'], name: 'index_wallets_on_user_id'
   end
 
+  add_foreign_key 'contents', 'assets'
   add_foreign_key 'contents', 'wallets'
   add_foreign_key 'orders', 'users'
   add_foreign_key 'trades', 'orders', column: 'book_order_id'

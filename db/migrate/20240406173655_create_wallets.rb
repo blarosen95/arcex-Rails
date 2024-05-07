@@ -6,7 +6,6 @@ class CreateWallets < ActiveRecord::Migration[7.1]
 
       ## Attributes/Columns
       t.string :name
-      t.text :currencies, array: true, default: []
 
       ## Timestamps
       t.timestamps
