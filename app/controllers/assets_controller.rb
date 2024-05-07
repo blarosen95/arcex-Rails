@@ -3,21 +3,11 @@ class AssetsController < ApplicationController
 
   def index
     @assets = Asset.all
-    serialized_assets = AssetSerializer.new(@assets).serializable_hash
-    assets_data = serialized_assets[:data]
-
-    render json: {
-      data: assets_data
-    }
+    render json: AssetSerializer.new(@assets).serializable_hash
   end
 
   def show
-    serialized_asset = AssetSerializer.new(@asset).serializable_hash
-    asset_data = serialized_asset[:data]
-
-    render json: {
-      data: asset_data
-    }
+    render json: AssetSerializer.new(@asset).serializable_hash
   end
 
   def value

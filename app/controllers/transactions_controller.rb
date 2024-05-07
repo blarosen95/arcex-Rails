@@ -38,18 +38,14 @@ class TransactionsController < ApplicationController
         status: { message: transaction.errors.full_messages.join(', ') }
       }, status: :unprocessable_entity
     else
-      render json: {
-        # TODO: Pretty sure that I can just return without prefixing with `data: `:
-        data: TransactionSerializer.new(transaction).serializable_hash[:data]
-      }
+      render json: TransactionSerializer.new(transaction).serializable_hash
     end
   end
 
   private
 
-  # ! TODO: We should (in the application controller) enforce being logged in as a req for most of our endpoints (likely, excluding only Devise/Auth routes from the requirement):
   def set_current_user_wallet
-    # ? TODO: Probably should rescue error and return a meaningful message via errors.add if it can't find this wallet
+    # ? TODO: Probably should rescue error and return a meaningful message via errors.add if it can't find this wallet (indicative of user creation failures)
     @sender_wallet = current_user.wallet
   end
 

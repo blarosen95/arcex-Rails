@@ -11,16 +11,12 @@ class OrdersController < ApplicationController
         status: { message: order.errors.full_messages.join(', ') }
       }, status: :unprocessable_entity
     else
-      render json: {
-        # TODO: Pretty sure that I can just return without prefixing with `data: `:
-        data: OrderSerializer.new(order).serializable_hash[:data]
-      }
+      render json: OrderSerializer.new(order).serializable_hash
     end
   end
 
   private
 
-  # TODO: Ensure a 401 error occurs when this doesn't find authenticated user (probably best to do this upstream in app)
   def set_user
     @user = current_user
   end
