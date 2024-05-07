@@ -4,9 +4,9 @@ class WalletsController < ApplicationController
     # TODO: For rn, users will only have one wallet, so find the wallet based on current user ownership
     # @wallet = Wallet.find(params[:id])
 
-    serialied_wallet = WalletSerializer.new(@wallet, include: [:contents]).serializable_hash
-    wallet_data = serialied_wallet[:data]
-    included_data = serialied_wallet[:included]
+    serialized_wallet = WalletSerializer.new(@wallet, include: [:contents]).serializable_hash
+    wallet_data = serialized_wallet[:data]
+    included_data = serialized_wallet[:included]
 
     render json: {
       data: wallet_data,
