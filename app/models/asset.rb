@@ -8,4 +8,8 @@ class Asset < ApplicationRecord
     currency = CURRENCIES.find { |c| c[:code] == code }
     currency[:current_value]
   end
+
+  def fiat?
+    fiat
+  end
 end
