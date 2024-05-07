@@ -11,25 +11,19 @@ class Users::SessionsController < Devise::SessionsController
   # ? TODO: Also, ensure that logging out will clear the cache
   # ? TODO: Also, ensure that cache's TTL is equal to auto-logout time
   def me
-    if current_user
-      render json: {
-        status: { code: 200, message: 'Current user fetched.' },
-        data: UserSerializer.new(current_user).serializable_hash[:data]
-      }, status: :ok
-    else
-      render json: {
-        status: { code: 401, message: "Couldn't find an active session." }
-      }, status: :unauthorized
-    end
+    render json: UserSerializer.new(current_user).serializable_hash and return if current_user
+
+    # TODO: We really shouldn't need the `and return` here, but it's good practice since we have workflows that do render and continue (i.e. order book services):
+    # TODO: Also, more importantly, we should create an error response pattern and use it as the default convention throughout the app instead of this longer format:
+    render json: {
+      status: { code: 401, message: "Couldn't find an active session." }
+    }, status: :unauthorized and return
   end
 
   private
 
   def respond_with(resource, _opts = {})
-    render json: {
-      status: { code: 200, message: 'Logged in successfully.' },
-      data: UserSerializer.new(resource).serializable_hash[:data]
-    }, status: :ok
+    render json: UserSerializer.new(resource).serializable_hash and return
   end
 
   def respond_to_on_destroy
