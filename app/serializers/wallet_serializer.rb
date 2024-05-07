@@ -4,7 +4,6 @@ class WalletSerializer < BaseSerializer
   attributes(
     *%i[
       name
-      currencies
       created_at
       updated_at
     ],

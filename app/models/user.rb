@@ -17,7 +17,7 @@ class User < ApplicationRecord
   private
 
   def create_wallet
-    wallet = build_wallet(user: self, currencies: CURRENCIES.map { |c| c[:code] }, name: 'Default Wallet')
+    wallet = build_wallet(user: self, name: 'Default Wallet')
     return if wallet.save
 
     Rails.logger.error "Wallet could not be created for user #{id}: #{wallet.errors.full_messages.join(', ')}"

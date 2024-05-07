@@ -31,7 +31,6 @@ if Rails.env.development?
       wallet_attributes << {
         user_id: i,
         name: 'Default Wallet',
-        currencies: CURRENCIES.map { |c| c[:code] },
         created_at: timestamp,
         updated_at: timestamp
       }
@@ -39,7 +38,7 @@ if Rails.env.development?
       CURRENCIES.each do |currency|
         content_attributes << {
           wallet_id: i,
-          currency: currency[:code],
+          asset_id: Asset.find_by_code(currency[:code]).id,
           balance: 0.5,
           created_at: timestamp,
           updated_at: timestamp
