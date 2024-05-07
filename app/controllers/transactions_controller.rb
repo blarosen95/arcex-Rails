@@ -18,15 +18,11 @@ class TransactionsController < ApplicationController
 
   def sent
     # TODO: Implement pagination (reasearch to see if anything is better than kaminari these days...):
-    render json: {
-      data: RecipientSerializer.new(@sender_wallet.sent_transactions.last(4)).serializable_hash[:data]
-    }
+    render json: RecipientSerializer.new(@sender_wallet.sent_transaction).serializable_hash
   end
 
   def received
-    render json: {
-      data: TransactionSerializer.new(@sender_wallet.received_transactions).serializable_hash[:data]
-    }
+    render json: TransactionSerializer.new(@sender_wallet.received_transactions).serializable_hash
   end
 
   def create
