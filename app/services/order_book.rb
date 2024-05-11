@@ -32,10 +32,18 @@ class OrderBook
         end
 
         # If the order book is exhausted, and current order is neither fully filled nor a market order, we should ensure the current order will queue in future order book creations:
-        @order.update!(status: :processing, locked: false) unless @order.order_type_market? || @order.fully_filled?
+        unless @order.market_order? || @order.fully_filled?
+          @order.update!(status: :processing,
+                         locked: false)
+        end
       else
         # TODO: In this case, we should prepare and queue if limit order. Otherwise, cancel as a failed market order
         puts "filter here: UH OH!! Didn't manage to instantiate a matching order book for #{@order.id}"
+
+        # TODO: Replace with sufficent cleanup:
+        return if @order.market_order?
+
+        @order.update!(status: :processing, locked: false)
       end
     end
   end
@@ -49,12 +57,15 @@ class OrderBook
 
   def execution_amount
     # We should always execute the lesser of the two orders' remaining amounts:
+    # [@book_order.amount_remaining, @order.amount_remaining].min
+    rtn = [@book_order.amount_remaining, @order.amount_remaining].max
+    puts "filter here: upstream... executing on #{rtn}"
     [@book_order.amount_remaining, @order.amount_remaining].min
   end
 
   # TODO: Likely need to optimize and paginate this method:
   def set_order_book(num_orders = 1)
-    price_order = @order.direction_buy? ? :asc : :desc
+    price_order = @order.buy? ? :asc : :desc
 
     @order_book = Order.where(asset: @order.asset, direction: @order.opposite_direction,
                               status: :processing, locked: false, order_type: :limit_order)
@@ -63,7 +74,7 @@ class OrderBook
 
   def validate_order_match!(book_order)
     # We don't price check when processing market orders:
-    return if @order.order_type_market?
+    return if @order.market_order?
 
     # Raise/Throw an error if the book_order is too low/high for the current order based on direction:
     return if @order.direction == 'buy' && book_order.price <= @order.price
@@ -102,7 +113,7 @@ class OrderBook
       )
     else
       # TODO: If the trade object is invalid, we should ????:
-      puts "filter here: Trade object is invalid for order #{@order}"
+      puts "filter here: Trade object is invalid for order #{@order}. It is invalid because: #{trade.errors.full_messages.join(', ')}"
     end
   end
 end

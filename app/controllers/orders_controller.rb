@@ -9,10 +9,12 @@ class OrdersController < ApplicationController
     if order.errors.any?
       render json: {
         status: { message: order.errors.full_messages.join(', ') }
-      }, status: :unprocessable_entity
-    else
-      render json: OrderSerializer.new(order).serializable_hash
+      }, status: :unprocessable_entity and return
     end
+
+    render json: OrderSerializer.new(order).serializable_hash
+
+    order.process_order!
   end
 
   private
@@ -32,6 +34,7 @@ class OrdersController < ApplicationController
       asset: @asset,
       direction: permitted_params[:direction],
       amount: permitted_params[:amount],
+      amount_remaining: permitted_params[:amount],
       price: permitted_params[:price],
       order_type: permitted_params[:order_type]
     )

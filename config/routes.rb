@@ -39,5 +39,8 @@ Rails.application.routes.draw do
         get 'value'
       end
     end
+
+    # TODO: Expand this set of routes as and when needed:
+    resources :orders, only: %i[create], defaults: { format: 'json' }
   end
 end

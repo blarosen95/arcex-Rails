@@ -1,13 +1,12 @@
 class Order < ApplicationRecord
   belongs_to :user
+  belongs_to :asset
 
   # An order that is fully filled in 1 trade will relate to just 1 trade, but orders can have many trades for partials:
   has_many :trades
 
-  # TODO: Might be smart to belongs_to :asset instead of a currency attribute at all, just allow it in the params for creating orders
-
   # TODO: Eventually, `reserved` type will be replaced with real types as a feature (i.e. stop loss, take profit, etc.):
-  enum order_type: %i[market limit reserved]
+  enum order_type: %i[market_order limit_order reserved_order_type]
 
   # Loose status spec:
   # - `pending` is when order is first created in Active Record
@@ -20,38 +19,56 @@ class Order < ApplicationRecord
   # - `buy` is when an order is placed to purchase an asset
   # - `sell` is when an order is placed to sell an asset
   # - `reserved` will be replaced with features such as margin trading
-  enum direction: %i[buy sell reserved]
+  enum direction: %i[buy sell reserved_direction]
 
   before_validation :set_default_amount_remaining, on: :create
 
-  validates :currency, presence: true
   validates :amount, numericality: true
   validates :order_type, :status, :direction, presence: true
 
   # This hook's method will queue in order book and create a Trade object as well:
-  after_create :process_order!
+  # after_create :process_order!
+
+  # def process_order!
+  #   ActiveRecord::Base.transaction do
+  #     # TODO: Use `build_wallet`/similar so that I can leverage built-in Active Record code:
+  #     if create_trade! && update!(status: :processing)
+  #       # TODO: Queue the order in the order book service and update the order status to `processed` if successful
+  #     end
+  #   rescue StandardError => e
+  #     puts "filter here: ERROR RESCUE: #{e.inspect}"
+  #     update!(status: :errored)
+  #     errors.add(:base, 'Order could not be processed')
+  #   end
+  # end
 
   def process_order!
     ActiveRecord::Base.transaction do
-      # TODO: Use `build_wallet`/similar so that I can leverage built-in Active Record code:
-      if create_trade! && update!(status: :processing)
-        # TODO: Queue the order in the order book service and update the order status to `processed` if successful
-      end
-    rescue StandardError => e
-      puts "filter here: ERROR RESCUE: #{e.inspect}"
-      update!(status: :errored)
-      errors.add(:base, 'Order could not be processed')
+      OrderBook.new(self).call
     end
-  end
-
-  private
-
-  def set_default_amount_remaining
-    self.amount_remaining ||= amount
   end
 
   def opposite_direction
     direction == 'buy' ? 'sell' : 'buy'
+  end
+
+  # TODO: Decide which of these actually needs to be private (CRITICALLY IMPORTANT!):
+  # private
+
+  # This method should calculate the fee based on the direction and the user's rolling volume:
+  def fee
+    # TODO: But for now, let's just return 0.00 for both directions:
+    if buy?
+      0.00
+    elsif sell?
+      0.00
+    end
+  end
+
+  def set_default_amount_remaining
+    puts "filter here: setting amount_remaining to amount: #{amount}"
+    puts "filter here: WE WON'T SET amount_remaining IF IT'S ALREADY SET! Currently set to: #{amount_remaining}"
+    self.amount_remaining ||= amount
   end
 
   def with_lock!
