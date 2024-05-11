@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
 
   def create
     transaction = CreateTransaction.new(@sender_wallet, permitted_params[:recipient_email], permitted_params[:amount],
-                                        permitted_params[:currency]).call
+                                        permitted_params[:asset_id]).call
 
     if transaction.errors.any?
       render json: {
@@ -49,6 +49,6 @@ class TransactionsController < ApplicationController
     # ! TODO: Eventually, we won't just enable sending to recipients based on their email:
     # params.require(:transaction).permit(:sender_wallet_id, :recipient_email, :amount, :currency)
     # ! TODO: For now, we're building so that users have just one wallet, eventually they will likely be able to have multiple wallets per user, but for now:
-    params.require(:transaction).permit(:recipient_email, :amount, :currency)
+    params.require(:transaction).permit(:recipient_email, :amount, :asset_id)
   end
 end

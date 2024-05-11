@@ -6,7 +6,7 @@ class TransactionSerializer < BaseSerializer
     *%i[
       sender_id
       recipient_id
-      currency
+      asset_id
       amount
       created_at
       updated_at

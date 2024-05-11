@@ -63,11 +63,12 @@ ActiveRecord::Schema[7.1].define(version: 20_240_507_193_611) do
   create_table 'transactions', force: :cascade do |t|
     t.bigint 'sender_id', null: false
     t.bigint 'recipient_id', null: false
-    t.string 'currency'
     t.decimal 'amount', precision: 30, scale: 18
     t.integer 'status', default: 0, null: false
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.bigint 'asset_id', null: false
+    t.index ['asset_id'], name: 'index_transactions_on_asset_id'
     t.index ['recipient_id'], name: 'index_transactions_on_recipient_id'
     t.index %w[sender_id recipient_id], name: 'index_transactions_on_sender_id_and_recipient_id'
     t.index ['sender_id'], name: 'index_transactions_on_sender_id'
@@ -110,6 +111,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_507_193_611) do
   add_foreign_key 'orders', 'users'
   add_foreign_key 'trades', 'orders', column: 'book_order_id'
   add_foreign_key 'trades', 'orders', column: 'immediate_order_id'
+  add_foreign_key 'transactions', 'assets'
   add_foreign_key 'transactions', 'wallets', column: 'recipient_id'
   add_foreign_key 'transactions', 'wallets', column: 'sender_id'
   add_foreign_key 'wallets', 'users'

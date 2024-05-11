@@ -1,11 +1,10 @@
 class Transaction < ApplicationRecord
   belongs_to :sender, class_name: 'Wallet'
   belongs_to :recipient, class_name: 'Wallet'
+  belongs_to :asset
 
   enum status: { processing: 0, complete: 1, errored: 2 }
 
-  validates :currency, presence: true
-  # TODO: Also, validate that the amount is within the wallet's Content balance for the given currency:
   validates :amount, numericality: true
   validates :sender, :recipient, presence: true
 
@@ -20,7 +19,7 @@ class Transaction < ApplicationRecord
         update!(status: :complete)
       else
         update!(status: :errored)
-        # TODO: Implement our safety/sanity checks here (i.e. ensuring none of the currency is transferred at all)
+        # TODO: Implement our safety/sanity checks here (i.e. ensuring none of the asset is transferred at all)
       end
     end
   rescue StandardError => _e
@@ -46,7 +45,7 @@ class Transaction < ApplicationRecord
   def sufficient_balance?
     return unless sender.present? && recipient.present?
 
-    sender_content = sender.contents.find_by(currency:)
+    sender_content = sender.contents.find_by(asset_id:)
 
     errors.add(:amount, "exceeds sender's balance") unless sender_content&.balance&.>= amount.to_f
   end
@@ -62,7 +61,7 @@ class Transaction < ApplicationRecord
     # Deduct amount from sender's balance
     # Ensure this change is immediately reflected to prevent overdrafts (i.e maybe implement a concern of LedgerBalance)
     # Return true if successful, false otherwise
-    content = sender.contents.find_by(currency:)
+    content = sender.contents.find_by(asset_id:)
     remaining_balance = content.balance.to_f - amount.to_f
     content.update!(balance: remaining_balance)
   end
@@ -71,7 +70,7 @@ class Transaction < ApplicationRecord
     # Add amount to recipient's balance
     # This should only happen if AML checks passed and the sender's balance was successfully deducted
     # Return true if successful, false otherwise
-    content = recipient.contents.find_by(currency:)
+    content = recipient.contents.find_by(asset_id:)
     new_balance = content.balance.to_f + amount.to_f
     content.update!(balance: new_balance)
   end
