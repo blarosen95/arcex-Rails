@@ -23,7 +23,7 @@ if Rails.env.development?
         username:,
         encrypted_password: '$2a$12$cl2At97lOZewOn0V93qVvuMIbDtqWocsYkEen23jWEZdaZKPEmhyC',
         confirmed_at: timestamp,
-        confirmation_sent_at: timestamp, # TODO: Might need to just rm this line if it fails at all
+        confirmation_sent_at: timestamp,
         created_at: timestamp,
         updated_at: timestamp
       }

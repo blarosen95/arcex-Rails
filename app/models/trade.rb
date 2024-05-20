@@ -30,7 +30,6 @@ class Trade < ApplicationRecord
     buyer_order = immediate_order.buy? ? immediate_order : book_order
     seller_order = immediate_order.sell? ? immediate_order : book_order
 
-    # TODO: Implement a `fee` method in the Order model:
     # Next, we need to calculate the fees for both orders:
     buyer_fee = buyer_order.fee
     seller_fee = seller_order.fee
@@ -43,34 +42,10 @@ class Trade < ApplicationRecord
     buyer_wallet = buyer_order.user.wallet
     seller_wallet = seller_order.user.wallet
 
-    # TODO: Temporary, very rough, implementation of a definition for the `fiat_asset` and `crypto_asset` variables. This is being done just to get Carl a demo video before the MVP is done:
+    # TODO: CRITICAL: Temporary, very rough, implementation of a definition for the `fiat_asset` and `crypto_asset` variables. This is being done just to get Carl a demo video before the MVP is done:
     fiat_asset = Asset.find_by(fiat: true)
     crypto_asset = buyer_order.asset
 
-    # # TODO: Will need to finish refactoring this model to relate to assets:
-    # # TODO: Will also need to finish refactoring the content model to validate non-negative balances:
-    # buyer_wallet.contents.find_by(asset: fiat_asset).decrement(:balance, buyer_total_cost)
-
-    # # If we're here, then the buyer can afford the entire transaction cost, so we can update the seller's balance too:
-    # seller_wallet.contents.find_by(asset: fiat_asset).increment(:balance, seller_total_revenue)
-
-    # # TODO: Temporary, very rough, implementation of a definition for the `crypto_asset` variable. This is being done just to get Carl a demo video before the MVP is done:
-    # crypto_asset = buyer_order.asset
-
-    # puts "filter here: executing on #{execution_amount}"
-
-    # # Now, ensure the asset is transferred from the seller to the buyer:
-    # seller_wallet.contents.find_by(asset: crypto_asset).decrement(:balance, execution_amount)
-    # buyer_wallet.contents.find_by(asset: crypto_asset).increment(:balance, execution_amount)
-
-    # puts "filter here: seller_wallet's balance of crypto_asset is now #{seller_wallet.contents.find_by(asset: crypto_asset).balance}"
-    # # Finally, update both wallets' contents:
-    # buyer_wallet.contents.find_by(asset: fiat_asset).save!
-    # seller_wallet.contents.find_by(asset: fiat_asset).save!
-    # buyer_wallet.contents.find_by(asset: crypto_asset).save!
-    # seller_wallet.contents.find_by(asset: crypto_asset).save!
-
-    # TODO: Refactoring because increment and decrement don't work anywhere like I'd initially believed they do:
     buyer_fiat_content = buyer_wallet.contents.find_by(asset: fiat_asset)
     seller_fiat_content = seller_wallet.contents.find_by(asset: fiat_asset)
 

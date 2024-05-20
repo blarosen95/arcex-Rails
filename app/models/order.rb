@@ -26,22 +26,6 @@ class Order < ApplicationRecord
   validates :amount, numericality: true
   validates :order_type, :status, :direction, presence: true
 
-  # This hook's method will queue in order book and create a Trade object as well:
-  # after_create :process_order!
-
-  # def process_order!
-  #   ActiveRecord::Base.transaction do
-  #     # TODO: Use `build_wallet`/similar so that I can leverage built-in Active Record code:
-  #     if create_trade! && update!(status: :processing)
-  #       # TODO: Queue the order in the order book service and update the order status to `processed` if successful
-  #     end
-  #   rescue StandardError => e
-  #     puts "filter here: ERROR RESCUE: #{e.inspect}"
-  #     update!(status: :errored)
-  #     errors.add(:base, 'Order could not be processed')
-  #   end
-  # end
-
   def process_order!
     ActiveRecord::Base.transaction do
       OrderBook.new(self).call
