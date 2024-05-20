@@ -101,15 +101,13 @@ class OrderBook
       # If we're here, the trade was successful, and we should update the two orders:
       # TODO: I don't think that I will need to reassign the @order instance variable since it's most likely a reference to the changed object. Revisit if issues:
       @order.update!(
-        amount_remaining: @order.amount_remaining - trade.execution_amount,
-        status: @order.fully_filled? ? :processed : :processing
+        amount_remaining: @order.amount_remaining - trade.execution_amount
       )
 
       # TODO: Will this work?? Remember that we have the book_order pessimistically locked from the block that called this method:
       # We should also update the book_order:
       @book_order.update!(
-        amount_remaining: @book_order.amount_remaining - trade.execution_amount,
-        status: @book_order.fully_filled? ? :processed : :processing
+        amount_remaining: @book_order.amount_remaining - trade.execution_amount
       )
     else
       # TODO: If the trade object is invalid, we should ????:
