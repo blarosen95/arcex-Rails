@@ -2,9 +2,9 @@ class Order < ApplicationRecord
   belongs_to :user
   belongs_to :asset
 
-  # TODO: CRITICAL: This is bugged. We need to explicitly state that the trade relationship comes back on order_id under two different names: `immediate_order` and `book_order`:
   # An order that is fully filled in 1 trade will relate to just 1 trade, but orders can have many trades for partials:
-  has_many :trades
+  has_many :immediate_trades, class_name: 'Trade', foreign_key: 'immediate_order_id'
+  has_many :book_trades, class_name: 'Trade', foreign_key: 'book_order_id'
 
   # TODO: Eventually, `reserved` type will be replaced with real types as a feature (i.e. stop loss, take profit, etc.):
   enum order_type: %i[market_order limit_order reserved_order_type]
@@ -37,6 +37,8 @@ class Order < ApplicationRecord
     buy? ? 'sell' : 'buy'
   end
 
+  def trades
+    (immediate_trades + book_trades).sort_by(&:created_at)
   end
 
   # TODO: Decide which of these actually needs to be private (CRITICALLY IMPORTANT!):
