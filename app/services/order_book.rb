@@ -109,6 +109,9 @@ class OrderBook
       @book_order.update!(
         amount_remaining: @book_order.amount_remaining - trade.execution_amount
       )
+
+      @order.update_status_after_trade!
+      @book_order.update_status_after_trade!
     else
       # TODO: If the trade object is invalid, we should ????:
       puts "filter here: Trade object is invalid for order #{@order}. It is invalid because: #{trade.errors.full_messages.join(', ')}"

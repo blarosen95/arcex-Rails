@@ -7,8 +7,8 @@ class CreateTrades < ActiveRecord::Migration[7.1]
       t.integer :status, null: false, default: 0
       t.decimal :execution_price, precision: 30, scale: 18
       t.decimal :execution_amount, precision: 30, scale: 18
-      # TODO: We should have two fee columns, not one: buyer_fee and seller_fee (or book_order_fee and immediate_order_fee, IDK):
-      t.decimal :fee, precision: 30, scale: 18
+      t.decimal :immediate_order_fee, precision: 30, scale: 18
+      t.decimal :book_order_fee, precision: 30, scale: 18
 
       t.timestamps
     end

@@ -6,7 +6,7 @@ class Trade < ApplicationRecord
 
   before_validation :set_default_fee, on: :create
 
-  validates :execution_price, :execution_amount, :fee, numericality: true
+  validates :execution_price, :execution_amount, :immediate_order_fee, :book_order_fee, numericality: true
   validates :status, presence: true
 
   validate :users_distinct?
@@ -20,9 +20,9 @@ class Trade < ApplicationRecord
   # TODO: Determine which of the following methods should ACTUALLY be private:
   # private
 
-  # TODO: Address the invalidity of tracking 1 fee where we should track 2 distinct fees:
   def set_default_fee
-    self.fee = immediate_order.fee
+    self.immediate_order_fee = immediate_order.fee
+    self.book_order_fee = book_order.fee
   end
 
   def execute_trade!
@@ -95,5 +95,8 @@ class Trade < ApplicationRecord
     seller_fiat_content.save!
     buyer_crypto_content.save!
     seller_crypto_content.save!
+
+    self.status = :completed
+    save!
   end
 end

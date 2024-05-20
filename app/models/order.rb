@@ -84,5 +84,9 @@ class Order < ApplicationRecord
     amount_remaining.zero?
   end
 
+  # This method is intended to be called by the Trade model after a trade is executed
+  # TODO: It could use a better name for sure:
+  def update_status_after_trade!
+    update!(status: fully_filled? ? :processed : :processing)
   end
 end
