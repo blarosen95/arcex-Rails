@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   belongs_to :user
   belongs_to :asset
 
+  # TODO: CRITICAL: This is bugged. We need to explicitly state that the trade relationship comes back on order_id under two different names: `immediate_order` and `book_order`:
   # An order that is fully filled in 1 trade will relate to just 1 trade, but orders can have many trades for partials:
   has_many :trades
 
