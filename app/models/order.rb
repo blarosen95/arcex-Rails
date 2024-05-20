@@ -81,6 +81,8 @@ class Order < ApplicationRecord
   end
 
   def fully_filled?
-    amount_remaining.zero? && status == 'processed'
+    amount_remaining.zero?
+  end
+
   end
 end
