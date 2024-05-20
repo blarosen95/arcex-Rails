@@ -17,9 +17,9 @@ class Wallet < ApplicationRecord
   def create_contents
     CURRENCIES.each do |currency|
       asset_id = Asset.find_by_code(currency[:code]).id
-      # wallet_content = contents.create(asset_id:, balance: 0.0)
+      wallet_content = contents.create(asset_id:, balance: 0.0)
       # TODO: Replace below with above when not testing Wallet UI/UX:
-      wallet_content = contents.create(asset_id:, balance: 100)
+      # wallet_content = contents.create(asset_id:, balance: 100)
 
       unless wallet_content.save
         Rails.logger.error "Contents could not be created for wallet #{id}: #{contents.errors.full_messages.join(', ')}"
