@@ -34,7 +34,9 @@ class Order < ApplicationRecord
   end
 
   def opposite_direction
-    direction == 'buy' ? 'sell' : 'buy'
+    buy? ? 'sell' : 'buy'
+  end
+
   end
 
   # TODO: Decide which of these actually needs to be private (CRITICALLY IMPORTANT!):
