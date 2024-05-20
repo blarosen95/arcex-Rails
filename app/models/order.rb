@@ -66,8 +66,6 @@ class Order < ApplicationRecord
   end
 
   def set_default_amount_remaining
-    puts "filter here: setting amount_remaining to amount: #{amount}"
-    puts "filter here: WE WON'T SET amount_remaining IF IT'S ALREADY SET! Currently set to: #{amount_remaining}"
     self.amount_remaining ||= amount
   end
 
