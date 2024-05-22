@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_user, only: %i[create]
+  before_action :set_user, only: %i[create show_order_book]
   before_action :set_asset, only: %i[create]
 
   def create
@@ -15,6 +15,30 @@ class OrdersController < ApplicationController
     render json: OrderSerializer.new(order).serializable_hash
 
     order.process_order!
+  end
+
+  def show_order_book
+    asset = Asset.find(params[:asset_id])
+
+    # TODO: At some point, I need to limit this to the MEDIAN-PRICED 100 orders (effectively excluding outliers rather than starting/ending with cheapest/priciest orders):
+    book_orders = Order.where(asset:, status: :processing, locked: false, order_type: :limit_order)
+
+    # Split book_orders into buy and sell orders:
+    bids = book_orders.select { |order| order.direction == 'buy' }.sort_by(&:price).reverse
+    asks = book_orders.select { |order| order.direction == 'sell' }.sort_by(&:price)
+
+    # Initialize cumulative total hashes:
+    cumulative_total_bids = { current_sum: 0 }
+    cumulative_total_asks = { current_sum: 0 }
+
+    # Serialize both bids and asks:
+    bids = OrderBookOrderSerializer.new(bids, { params: { cumulative_total: cumulative_total_bids } }).serializable_hash
+    asks = OrderBookOrderSerializer.new(asks, { params: { cumulative_total: cumulative_total_asks } }).serializable_hash
+
+    # Merge together into order_book:
+    order_book = { bids:, asks: }
+
+    render json: { data: order_book }
   end
 
   private

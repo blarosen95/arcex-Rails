@@ -42,5 +42,7 @@ Rails.application.routes.draw do
 
     # TODO: Expand this set of routes as and when needed:
     resources :orders, only: %i[create], defaults: { format: 'json' }
+
+    get 'order-book', to: 'orders#show_order_book', as: :show_order_book
   end
 end
