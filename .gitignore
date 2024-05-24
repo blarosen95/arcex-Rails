@@ -44,3 +44,6 @@ arcex.dev.env
 
 # Dev Env NPM Deps (stuff like Prettier)
 /node_modules/*
+
+# Ignore my playground folder:
+/app/scratch/*
