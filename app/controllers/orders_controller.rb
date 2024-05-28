@@ -65,6 +65,8 @@ class OrdersController < ApplicationController
   end
 
   def permitted_params
-    params.require(:order).permit(:direction, :price, :order_type, :asset_id, :amount)
+    permitted = params.require(:order).permit(:direction, :price, :order_type, :asset_id, :amount)
+    # Drop off `price` param if it's a market order:
+    permitted.delete_if { |key, value| key == 'price' && permitted[:order_type] == 0 }
   end
 end
