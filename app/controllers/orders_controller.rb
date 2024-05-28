@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  # TODO: The following is probably a good idea as it shouldn't NEED to be auth-walled:
+  # skip_before_action :authenticate_user!, only: %i[show_order_book]
   before_action :set_user, only: %i[create show_order_book]
   before_action :set_asset, only: %i[create]
 
