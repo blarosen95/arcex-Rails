@@ -26,8 +26,8 @@ class OrdersController < ApplicationController
     book_orders = Order.where(asset:, status: :processing, locked: false, order_type: :limit_order)
 
     # Split book_orders into buy and sell orders:
-    bids = book_orders.select { |order| order.direction == 'buy' }.sort_by(&:price).reverse
-    asks = book_orders.select { |order| order.direction == 'sell' }.sort_by(&:price)
+    bids = book_orders.select { |order| order.buy? }.sort_by(&:price).reverse
+    asks = book_orders.select { |order| order.sell? }.sort_by(&:price)
 
     # Initialize cumulative total hashes:
     cumulative_total_bids = { current_sum: 0 }
