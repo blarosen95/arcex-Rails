@@ -46,7 +46,7 @@ class OrdersController < ApplicationController
   private
 
   def set_user
-    @user = current_user
+    @user = current_user || render_unauthorized! and return
   end
 
   # TODO: Decide between error responses of: 404, 422 or 400:
