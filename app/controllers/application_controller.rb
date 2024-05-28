@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     return if current_user.present?
 
     # TODO: We should probably at least include the attempted action in the error message if not more. But revisit once we have an error logging platform in place (i.e. Sentry/Datadog):
-    render json: { error: 'Unauthorized' }, status: :unauthorized and return
+    render_unauthorized! and return
   end
 
   def configure_permitted_parameters
