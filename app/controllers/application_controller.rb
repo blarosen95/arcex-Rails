@@ -40,4 +40,8 @@ class ApplicationController < ActionController::Base
   def set_current_session
     Current.session ||= request.session
   end
+
+  def render_unauthorized!
+    render json: { error: 'Unauthorized' }, status: :unauthorized
+  end
 end
