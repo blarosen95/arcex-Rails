@@ -23,11 +23,11 @@ class OrdersController < ApplicationController
     asset_id = Asset.parse_id(params[:asset_id])
 
     # TODO: At some point, I need to limit this to the MEDIAN-PRICED 100 orders (effectively excluding outliers rather than starting/ending with cheapest/priciest orders):
-    book_orders = Order.where(asset:, status: :processing, locked: false, order_type: :limit_order)
+    bids = Order.where(asset_id:, status: :processing, locked: false,
+                       order_type: :limit_order, direction: :buy).order(price: :desc, created_at: :asc)
 
-    # Split book_orders into buy and sell orders:
-    bids = book_orders.select { |order| order.buy? }.sort_by(&:price).reverse
-    asks = book_orders.select { |order| order.sell? }.sort_by(&:price)
+    asks = Order.where(asset_id:, status: :processing, locked: false,
+                       order_type: :limit_order, direction: :sell).order(price: :asc, created_at: :asc)
 
     # Initialize cumulative total hashes:
     cumulative_total_bids = { current_sum: 0 }
