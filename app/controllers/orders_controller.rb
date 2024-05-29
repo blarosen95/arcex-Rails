@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
   end
 
   def show_order_book
-    asset = Asset.find(params[:asset_id])
+    asset_id = Asset.parse_id(params[:asset_id])
 
     # TODO: At some point, I need to limit this to the MEDIAN-PRICED 100 orders (effectively excluding outliers rather than starting/ending with cheapest/priciest orders):
     book_orders = Order.where(asset:, status: :processing, locked: false, order_type: :limit_order)
