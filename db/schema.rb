@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_507_193_611) do
   create_table 'contents', force: :cascade do |t|
     t.bigint 'wallet_id', null: false
     t.decimal 'balance', precision: 10, scale: 2, default: '0.0'
+    t.decimal 'usable_balance', precision: 10, scale: 2, default: '0.0'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.bigint 'asset_id', null: false
