@@ -21,21 +21,31 @@ class OrdersController < ApplicationController
 
   def show_order_book
     asset_id = Asset.parse_id(params[:asset_id])
+    counts = (params[:count] || 100).to_i
+    order_grouping_threshold = (params[:threshold] || 0.01).to_f
 
     # TODO: At some point, I need to limit this to the MEDIAN-PRICED 100 orders (effectively excluding outliers rather than starting/ending with cheapest/priciest orders):
-    bids = Order.where(asset_id:, status: :processing, locked: false,
-                       order_type: :limit_order, direction: :buy).order(price: :desc, created_at: :asc)
+    bids = Order.where(asset_id:, status: :processing, locked: false, order_type: :limit_order, direction: :buy)
+                .order(price: :desc, created_at: :asc)
+                .limit(counts)
 
-    asks = Order.where(asset_id:, status: :processing, locked: false,
-                       order_type: :limit_order, direction: :sell).order(price: :asc, created_at: :asc)
+    asks = Order.where(asset_id:, status: :processing, locked: false, order_type: :limit_order, direction: :sell)
+                .order(price: :asc, created_at: :asc)
+                .limit(counts)
+
+    # Group orders by price threshold:
+    grouped_bids = group_orders_by_price_threshold(bids, order_grouping_threshold)
+    grouped_asks = group_orders_by_price_threshold(asks, order_grouping_threshold)
 
     # Initialize cumulative total hashes:
     cumulative_total_bids = { current_sum: 0 }
     cumulative_total_asks = { current_sum: 0 }
 
     # Serialize both bids and asks:
-    bids = OrderBookOrderSerializer.new(bids, { params: { cumulative_total: cumulative_total_bids } }).serializable_hash
-    asks = OrderBookOrderSerializer.new(asks, { params: { cumulative_total: cumulative_total_asks } }).serializable_hash
+    bids = OrderBookOrderSerializer.new(grouped_bids,
+                                        { params: { cumulative_total: cumulative_total_bids } }).serializable_hash
+    asks = OrderBookOrderSerializer.new(grouped_asks,
+                                        { params: { cumulative_total: cumulative_total_asks } }).serializable_hash
 
     # Merge together into order_book:
     order_book = { bids:, asks: }
@@ -70,5 +80,39 @@ class OrdersController < ApplicationController
     permitted = params.require(:order).permit(:direction, :price, :order_type, :asset_id, :amount)
     # Drop off `price` param if it's a market order:
     permitted.delete_if { |key, value| key == 'price' && permitted[:order_type] == 0 }
+  end
+
+  def group_orders_by_price_threshold(orders, threshold)
+    grouped_orders = []
+    current_group = []
+
+    orders.each do |order|
+      if current_group.empty?
+        current_group << order
+      else
+        last_order = current_group.last
+        if within_price_threshold?(last_order.price, order.price, threshold)
+          current_group << order
+        else
+          grouped_orders << merge_order_group(current_group)
+          current_group = [order]
+        end
+      end
+    end
+    grouped_orders << merge_order_group(current_group) unless current_group.empty?
+    grouped_orders
+  end
+
+  def within_price_threshold?(price1, price2, threshold)
+    (price1 - price2).abs / [price1, price2].min <= threshold
+  end
+
+  def merge_order_group(order_group)
+    return order_group.first if order_group.size == 1
+
+    merged_order = order_group.first.dup
+    merged_order.amount = order_group.sum(&:amount)
+    merged_order.amount_remaining = order_group.sum(&:amount_remaining)
+    merged_order
   end
 end
