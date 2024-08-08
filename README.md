@@ -1,5 +1,6 @@
 # README
 **This project is now open-source.**
+
 ARCEX Server is the backend for the ARCEX platform. This README documents the steps necessary to get it up and running.
 
 - Assumptions
